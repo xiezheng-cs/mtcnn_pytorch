@@ -10,9 +10,9 @@ from tools.image_tools import *
 import tools.utils as utils
 
 model_urls = {
-    'pnet': 'https://github.com/xiezheng-cs/mtcnn-pytorch/releases/download/mtcnn_model/pnet-3da9e965.pt',
-    'rnet': 'https://github.com/xiezheng-cs/mtcnn-pytorch/releases/download/mtcnn_model/rnet-ea379816.pt',
-    'onet': 'https://github.com/xiezheng-cs/mtcnn-pytorch/releases/download/mtcnn_model/onet-4b09b161.pt',
+    'pnet': 'https://github.com/xiezheng-cs/mtcnn_pytorch/releases/download/mtcnn/pnet-3da9e965.pt',
+    'rnet': 'https://github.com/xiezheng-cs/mtcnn_pytorch/releases/download/mtcnn/rnet-ea379816.pt',
+    'onet': 'https://github.com/xiezheng-cs/mtcnn_pytorch/releases/download/mtcnn/onet-4b09b161.pt',
 }
 
 logger = logging.getLogger("app")
