@@ -1,4 +1,7 @@
 import sys
+sys.path.append('./')
+
+import sys
 sys.path.insert(0, "/home/liujing/Codes/MTCNN")
 
 import argparse
