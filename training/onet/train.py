@@ -1,5 +1,5 @@
 import sys
-sys.path.append("/home/liujing/Codes/MTCNN")
+sys.path.append('./')
 
 import argparse
 import torch

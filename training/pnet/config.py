@@ -3,11 +3,11 @@ class Config(object):
         super(Config, self).__init__()
         #  ------------ General options ----------------------------------------
         self.save_path = "./results/pnet/"
-        self.dataPath = "/home/datasets/Face/Wider_Face/WIDER_train/images"  # path for loading data set
+        self.dataPath = "'/home/dataset/WIDER/WIDER_train/images"  # path for loading data set
         self.annoPath = "./annotations/imglist_anno_12.txt"
         self.manualSeed = 1  # manually set RNG seed
         self.use_cuda = True
-        self.GPU = "0"  # default gpu to use
+        self.GPU = "0, 1"  # default gpu to use
 
         # ------------- Data options -------------------------------------------
         self.nThreads = 8  # number of data loader threads

@@ -1,7 +1,10 @@
+import sys
+sys.path.append('./')
+
+import os
 import argparse
 import numpy as np
 import cv2
-import os
 import numpy.random as npr
 from tools.utils import IoU
 import config
@@ -12,7 +15,7 @@ def gen_pnet_data(data_dir, anno_file, prefix):
     pos_save_dir = os.path.join(data_dir, "12/positive")
     part_save_dir = os.path.join(data_dir, "12/part")
 
-    for dir_path in [neg_save_dir, pos_save_dir, part_save_dir]:
+    for dir_path in [neg_save_dir, pos_save_dir, part_save_dir]:  # make
         if not os.path.exists(dir_path):
             os.makedirs(dir_path)
 
@@ -45,9 +48,10 @@ def gen_pnet_data(data_dir, anno_file, prefix):
 
     for annotation in annotations:
         annotation = annotation.strip().split(' ')
-        im_path = os.path.join(prefix, annotation[0])
-        bbox = list(map(float, annotation[1:]))
-        boxes = np.array(bbox, dtype=np.int32).reshape(-1, 4)
+        im_path = os.path.join(prefix, annotation[0])  # image_path
+        print(im_path)
+        bbox = list(map(float, annotation[1:]))  # map()函数是将func作用于seq中的每一个元素，并将所有的调用的结果作为一个list返回
+        boxes = np.array(bbox, dtype=np.int32).reshape(-1, 4)  # N*4 dim array
         img = cv2.imread(im_path)
         idx += 1
 
@@ -67,7 +71,7 @@ def gen_pnet_data(data_dir, anno_file, prefix):
 
             if np.max(Iou) < 0.3:
                 # Iou with all gts must below 0.3
-                save_file = os.path.join(neg_save_dir, "%s.jpg" % n_idx)
+                save_file = os.path.join(neg_save_dir, "%s.jpg" % n_idx)  # save neg image
                 f2.write(save_file + ' 0\n')
                 cropped_im = img[ny: ny + size, nx: nx + size, :]
                 resized_im = cv2.resize(cropped_im, (12, 12), interpolation=cv2.INTER_LINEAR)
@@ -110,6 +114,7 @@ def gen_pnet_data(data_dir, anno_file, prefix):
                     n_idx += 1
 
             # generate positive examples and part faces
+            # 每个box随机生成50个box，Iou>=0.65的作为positive examples，0.4<=Iou<0.65的作为part faces，其他忽略
             for i in range(20):
                 size = npr.randint(int(min(w, h) * 0.8),
                                    np.ceil(1.25 * max(w, h)))
@@ -127,6 +132,7 @@ def gen_pnet_data(data_dir, anno_file, prefix):
                     continue
                 crop_box = np.array([nx1, ny1, nx2, ny2])
 
+                # bbox偏移量的计算，由 x1 = nx1 + float(size)*offset_x1 推导而来
                 offset_x1 = (x1 - nx1) / float(size)
                 offset_y1 = (y1 - ny1) / float(size)
                 offset_x2 = (x2 - nx2) / float(size)
@@ -167,7 +173,7 @@ def parse_args():
     parser.add_argument('--anno_file', dest='annotation_file', help='wider face original annotation file',
                         default=os.path.join(config.ANNO_STORE_DIR, "wider_origin_anno.txt"), type=str)
     parser.add_argument('--prefix_path', dest='prefix_path', help='annotation file image prefix root path',
-                        default='/home/datasets/Face/Wider_Face/WIDER_train/images', type=str)
+                        default='/home/dataset/WIDER/WIDER_train/images', type=str)
 
     args = parser.parse_args()
     return args

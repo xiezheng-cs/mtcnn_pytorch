@@ -1,51 +1,76 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+# @Time    : 18-7-31 上午11:48
+# @Author  : xiezheng
+# @Site    : 
+# @File    : train_detect.py
+
 import time
 
-import torch.utils.model_zoo as model_zoo
+import numpy as np
+import torch
+import torchvision.transforms as transforms
+
 import cv2
-
-from models import PNet,ONet,RNet
-
-import logging
+import os
+from models.onet import ONet
+from models.pnet import PNet
+from models.rnet import RNet
+from checkpoint import CheckPoint
 from tools.image_tools import *
 import tools.utils as utils
 
-model_urls = {
-    'pnet': 'https://github.com/xiezheng-cs/mtcnn_pytorch/releases/download/mtcnn/pnet-3da9e965.pt',
-    'rnet': 'https://github.com/xiezheng-cs/mtcnn_pytorch/releases/download/mtcnn/rnet-ea379816.pt',
-    'onet': 'https://github.com/xiezheng-cs/mtcnn_pytorch/releases/download/mtcnn/onet-4b09b161.pt',
-}
 
-logger = logging.getLogger("app")
 class MtcnnDetector(object):
     ''' P, R, O net for face detection and landmark alignment'''
 
     def __init__(self,
+                 p_model_path=None,
+                 r_model_path=None,
+                 o_model_path=None,
                  min_face_size=12,
                  stride=2,
                  threshold=[0.6, 0.7, 0.7],
                  scale_factor=0.709,
                  use_cuda=True):
-        self.pnet_detector, self.rnet_detector, self.onet_detector = self.create_mtcnn_net(use_cuda)
+        self.pnet_detector, self.rnet_detector, self.onet_detector = self.create_mtcnn_net(
+            p_model_path, r_model_path, o_model_path, use_cuda)
         self.min_face_size = min_face_size
         self.stride = stride
         self.thresh = threshold
         self.scale_factor = scale_factor
 
-    def create_mtcnn_net(self, use_cuda=True):
+    def create_mtcnn_net(self, p_model_path=None, r_model_path=None, o_model_path=None, use_cuda=True):
+        dirname, _ = os.path.split(p_model_path)
+        checkpoint = CheckPoint(dirname)
+
+        pnet, rnet, onet = None, None, None
         self.device = torch.device(
-            "cuda" if use_cuda and torch.cuda.is_available() else "cpu")
+            "cuda:0" if use_cuda and torch.cuda.is_available() else "cpu")
 
-        pnet = PNet()
-        pnet.load_state_dict(model_zoo.load_url(model_urls['pnet']))
-        pnet.to(self.device).eval()
+        if p_model_path is not None:
+            pnet = PNet()
+            pnet_model_state = checkpoint.load_model(p_model_path)
+            pnet = checkpoint.load_state(pnet, pnet_model_state)
+            if (use_cuda):
+                pnet.to(self.device)
+            pnet.eval()
 
-        onet = ONet()
-        onet.load_state_dict(model_zoo.load_url(model_urls['onet']))
-        onet.to(self.device).eval()
+        if r_model_path is not None:
+            rnet = RNet()
+            rnet_model_state = checkpoint.load_model(r_model_path)
+            rnet = checkpoint.load_state(rnet, rnet_model_state)
+            if (use_cuda):
+                rnet.to(self.device)
+            rnet.eval()
 
-        rnet = RNet()
-        rnet.load_state_dict(model_zoo.load_url(model_urls['rnet']))
-        rnet.to(self.device).eval()
+        if o_model_path is not None:
+            onet = ONet()
+            onet_model_state = checkpoint.load_model(o_model_path)
+            onet = checkpoint.load_state(onet, onet_model_state)
+            if (use_cuda):
+                onet.to(self.device)
+            onet.eval()
 
         return pnet, rnet, onet
 
@@ -467,11 +492,8 @@ class MtcnnDetector(object):
 
             t3 = time.time() - t
             t = time.time()
-
-            logger.info(f"Total time cost: {t1+t2+t3:.4f}s, "
-                        f"PNet time cost: {t1:.4f}s, "
-                        f"RNet time cost: {t2:.4f}s, "
-                        f"ONet time cost: {t2:.4f}s. ")
-
+            print(
+                "time cost " + '{:.3f}'.format(t1 + t2 + t3) + '  pnet {:.3f}  rnet {:.3f}  onet {:.3f}'.format(t1, t2,
+                                                                                                                t3))
 
         return boxes_align, landmark_align

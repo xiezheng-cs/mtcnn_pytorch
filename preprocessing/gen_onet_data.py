@@ -1,3 +1,6 @@
+import sys
+sys.path.append('./')
+
 import cv2
 import argparse
 import numpy as np
@@ -6,6 +9,7 @@ import os
 import pickle
 
 import config
+
 from tools.utils import convert_to_square, IoU
 
 
@@ -189,7 +193,7 @@ def parse_args():
     parser.add_argument('--gpu', dest='use_cuda', help='with gpu',
                         default=config.USE_CUDA, type=bool)
     parser.add_argument('--prefix_path', dest='prefix_path', help='annotation file image prefix root path',
-                        default='/home/datasets/Face/Wider_Face/WIDER_train/images', type=str)
+                        default='/home/dataset/WIDER/WIDER_train/images', type=str)
 
     args = parser.parse_args()
     return args

@@ -1,3 +1,6 @@
+import sys
+sys.path.append('./')
+
 import argparse
 import os
 import pickle
@@ -9,7 +12,7 @@ import numpy as np
 import tools.vision as vision
 import config
 import cv2
-from tools.detect import MtcnnDetector
+from tools.train_detect import MtcnnDetector
 from tools.imagedb import ImageDB
 from tools.image_reader import TestImageLoader
 from tools.utils import IoU, convert_to_square
@@ -62,7 +65,7 @@ def gen_rnet_data(data_dir, anno_file, pnet_model_file, prefix_path='', use_cuda
     with open(save_file, 'wb') as f:
         pickle.dump(all_boxes, f, pickle.HIGHEST_PROTOCOL)
 
-    save_file = '/home/liujing/Codes/MTCNN/data/pnet_detections_1532530263.pkl'
+    # save_file = '/home/liujing/Codes/MTCNN/data/pnet_detections_1532530263.pkl'
     get_rnet_sample_data(data_dir, anno_file, save_file, prefix_path)
 
 
@@ -188,11 +191,11 @@ def parse_args():
     parser.add_argument('--anno_file', dest='annotation_file', help='wider face original annotation file',
                         default=os.path.join(config.ANNO_STORE_DIR, "wider_origin_anno.txt"), type=str)
     parser.add_argument('--pmodel_file', dest='pnet_model_file', help='PNet model file path',
-                        default='./results/pnet/log_bs512_lr0.010_072401/check_point/model_050.pth', type=str)
+                        default='./results/pnet/log_bs512_lr0.010_072402/check_point/model_050.pth', type=str)
     parser.add_argument('--gpu', dest='use_cuda', help='with gpu',
                         default=config.USE_CUDA, type=bool)
     parser.add_argument('--prefix_path', dest='prefix_path', help='annotation file image prefix root path',
-                        default='/home/datasets/Face/Wider_Face/WIDER_train/images', type=str)
+                        default='/home/dataset/WIDER/WIDER_train/images', type=str)
 
     args = parser.parse_args()
     return args

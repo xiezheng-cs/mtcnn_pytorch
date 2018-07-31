@@ -3,14 +3,14 @@ import sys
 import pathlib
 import logging
 import cv2
-from tools.detect import MtcnnDetector
+from tools.test_detect import MtcnnDetector
 
 logger = logging.getLogger("app")
 formatter = logging.Formatter('%(asctime)s %(levelname)-8s: %(message)s')
 console_handler = logging.StreamHandler(sys.stdout)
 logger.addHandler(console_handler)
 logger.setLevel(logging.INFO)
-console_handler.formatter = formatter  # 也可以直接给formatter赋值
+console_handler.formatter = formatter  # 也可以直接给formatter赋值 
 
 
 def draw_images(img, bboxs, landmarks):  # 在图片上绘制人脸框及特征点

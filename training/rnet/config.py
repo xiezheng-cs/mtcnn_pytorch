@@ -3,7 +3,7 @@ class Config(object):
         super(Config, self).__init__()
         #  ------------ General options ----------------------------------------
         self.save_path = "./results/rnet/"
-        self.dataPath = "/home/datasets/Face/Wider_Face/WIDER_train/images"  # path for loading data set
+        self.dataPath = "/home/dataset/WIDER/WIDER_train/images"  # path for loading data set
         self.annoPath = "./annotations/imglist_anno_24.txt"
         self.manualSeed = 1  # manually set RNG seed
         self.use_cuda = True
