@@ -53,3 +53,4 @@ trainer = PNetTrainer(config.lr, train_loader, model, optimizer, scheduler, logg
 for epoch in range(1, config.nEpochs + 1):
     cls_loss_, box_offset_loss, total_loss, accuracy = trainer.train(epoch)
     checkpoint.save_model(model, index=epoch)
+

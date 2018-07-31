@@ -146,3 +146,4 @@ if __name__ == '__main__':
     args = parse_args()
 
     gen_data(args.annotation_file, args.traindata_store, args.prefix_path)
+

@@ -203,3 +203,4 @@ if __name__ == '__main__':
     args = parse_args()
     gen_onet_data(args.traindata_store, args.annotation_file, args.pnet_model_file, args.rnet_model_file,
                   args.prefix_path, args.use_cuda)
+
