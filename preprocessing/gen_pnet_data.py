@@ -19,9 +19,9 @@ def gen_pnet_data(data_dir, anno_file, prefix):
         if not os.path.exists(dir_path):
             os.makedirs(dir_path)
 
-    save_dir = os.path.join(data_dir, "pnet")
-    if not os.path.exists(save_dir):
-        os.mkdir(save_dir)
+#     save_dir = os.path.join(data_dir, "pnet")
+#     if not os.path.exists(save_dir):
+#         os.mkdir(save_dir)
 
     post_save_file = os.path.join(
         config.ANNO_STORE_DIR, config.PNET_POSTIVE_ANNO_FILENAME)
