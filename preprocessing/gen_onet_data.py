@@ -1,63 +1,67 @@
 import sys
+
 sys.path.append('./')
 
 import cv2
 import argparse
 import numpy as np
-
 import os
 import pickle
+import time
 
 import config
-
-from tools.utils import convert_to_square, IoU
+import tools.vision as vision
+from tools.train_detect import MtcnnDetector
+from tools.imagedb import ImageDB
+from tools.image_reader import TestImageLoader
+from tools.utils import IoU, convert_to_square
 
 
 def gen_onet_data(data_dir, anno_file, pnet_model_file, rnet_model_file, prefix_path='', use_cuda=True, vis=False):
-    # mtcnn_detector = MtcnnDetector(p_model_path=pnet_model_file,
-    #                                r_model_path=rnet_model_file,
-    #                                o_model_path=None,
-    #                                min_face_size=12,
-    #                                use_cuda=True)
+    mtcnn_detector = MtcnnDetector(p_model_path=pnet_model_file,
+                                   r_model_path=rnet_model_file,
+                                   o_model_path=None,
+                                   min_face_size=12,
+                                   use_cuda=True)
 
-    # imagedb = ImageDB(anno_file, mode="test", prefix_path=prefix_path)
-    # imdb = imagedb.load_imdb()
-    # image_reader = TestImageLoader(imdb,1,False)
+    imagedb = ImageDB(anno_file, mode="test", prefix_path=prefix_path)
+    imdb = imagedb.load_imdb()
+    image_reader = TestImageLoader(imdb, 1, False)
 
-    # all_boxes = list()
-    # batch_idx = 0
+    all_boxes = list()
+    batch_idx = 0
 
-    # for databatch in image_reader:
-    #     if batch_idx % 100 == 0:
-    #         print("%d images done" % batch_idx)
-    #     im = databatch
-    #     t = time.time()
-    #     #detect an image by pnet and rnet
-    #     p_boxes, p_boxes_align = mtcnn_detector.detect_pnet(im=im)
-    #     boxes, boxes_align = mtcnn_detector.detect_rnet(im=im, dets=p_boxes_align)
-    #     if boxes_align is None:
-    #         all_boxes.append(np.array([]))
-    #         batch_idx += 1
-    #         continue
-    #     if vis:
-    #         vision.vis_face(im, boxes_align)
+    for databatch in image_reader:
+        if batch_idx % 100 == 0:
+            print("%d images done" % batch_idx)
+        im = databatch
+        t = time.time()
+        # detect an image by pnet and rnet
+        p_boxes, p_boxes_align = mtcnn_detector.detect_pnet(im=im)
+        boxes, boxes_align = mtcnn_detector.detect_rnet(im=im, dets=p_boxes_align)
+        if boxes_align is None:
+            all_boxes.append(np.array([]))
+            batch_idx += 1
+            continue
+        if vis:
+            vision.vis_face(im, boxes_align)
 
-    #     t1 = time.time() - t
-    #     print('time cost for image ', batch_idx, '/', image_reader.size, ': ', t1)
-    #     all_boxes.append(boxes_align)
-    #     batch_idx += 1
+        t1 = time.time() - t
+        print('time cost for image ', batch_idx, '/', image_reader.size, ': ', t1)
+        all_boxes.append(boxes_align)
+        batch_idx += 1
 
-    # save_path = config.TRAIN_DATA_DIR
-    # if not os.path.exists(save_path):
-    #     os.mkdir(save_path)
+    save_path = config.TRAIN_DATA_DIR
+    if not os.path.exists(save_path):
+        os.mkdir(save_path)
 
-    # save_file = os.path.join(
-    #     save_path, "pnet_rnet_detections_%d.pkl" % int(time.time()))
+    save_file = os.path.join(
+        save_path, "pnet_rnet_detections_%d.pkl" % int(time.time()))
 
-    # with open(save_file, 'wb') as f:
-    #     pickle.dump(all_boxes, f, pickle.HIGHEST_PROTOCOL)
+    with open(save_file, 'wb') as f:
+        pickle.dump(all_boxes, f, pickle.HIGHEST_PROTOCOL)
 
-    save_file = '/home/liujing/Codes/MTCNN/data/pnet_detections_1532582821.pkl'
+    # save_file = '/home/liujing/Codes/MTCNN/data/pnet_detections_1532582821.pkl'
     get_onet_sample_data(data_dir, anno_file, save_file, prefix_path)
 
 
@@ -187,9 +191,9 @@ def parse_args():
     parser.add_argument('--anno_file', dest='annotation_file', help='wider face original annotation file',
                         default=os.path.join(config.ANNO_STORE_DIR, "wider_origin_anno.txt"), type=str)
     parser.add_argument('--pmodel_file', dest='pnet_model_file', help='PNet model file path',
-                        default='./results/pnet/log_bs512_lr0.010_072401/check_point/model_050.pth', type=str)
+                        default='./results/pnet/log_bs512_lr0.010_072402/check_point/model_050.pth', type=str)
     parser.add_argument('--rmodel_file', dest='rnet_model_file', help='RNet model file path',
-                        default='./results/rnet/log_bs512_lr0.010_072501/check_point/model_050.pth', type=str)
+                        default='./results/rnet/log_bs512_lr0.001_072502/check_point/model_050.pth', type=str)
     parser.add_argument('--gpu', dest='use_cuda', help='with gpu',
                         default=config.USE_CUDA, type=bool)
     parser.add_argument('--prefix_path', dest='prefix_path', help='annotation file image prefix root path',
@@ -203,4 +207,3 @@ if __name__ == '__main__':
     args = parse_args()
     gen_onet_data(args.traindata_store, args.annotation_file, args.pnet_model_file, args.rnet_model_file,
                   args.prefix_path, args.use_cuda)
-
