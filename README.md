@@ -43,18 +43,17 @@ pip install torchvision
 pip install opencv-python
 ```
 
-**三、简单测试模型**
+**三、简单测试给定模型**
 
-直接使用[训练好的网络模型](https://github.com/xiezheng-cs/mtcnn_pytorch/releases)在给定的测试数据集(位于mtcnn_pytorch/data/test_images/目录下,共64张测试图片)，运行以下命令，即可在mtcnn_pytorch/data/you_result/目录下查看检测结果。
+直接使用我们[训练好的网络模型](https://github.com/xiezheng-cs/mtcnn_pytorch/releases)在给定的测试数据集(位于mtcnn_pytorch/data/test_images/目录下,共64张测试图片)，运行以下命令，即可在mtcnn_pytorch/data/you_result/目录下查看检测结果。
 ```bash
 cd mtcnn_pytorch/
 python test_image.py
 ```
-若同学们想测试自己训练好的模型，则修改测试文件相关代码，然后运行即可。
 
 **四、训练**
 
-在训练过程中，需要注意训练数据集的路径是否与你本机或服务器存放路径一致，若不一致，则需要修改相关文件代码。
+**注意：** 在训练过程中，需要注意训练数据集路径是否与你本机或服务器存放路径一致，若不一致，则需修改相关文件代码。
 
 1.训练PNet网络
 ```bash
@@ -85,5 +84,15 @@ python preprocessing/assemble_onet_imglist.py
 python training/onet/train.py
 ```
 训练完成，即可在mtcnn_pytorch/results/目录下得到三个训练好的网络模型。
+
+**五、简单测试自己训练好的模型**
+
+在给定的测试数据集(位于mtcnn_pytorch/data/test_images/目录下,共64张测试图片)简单测试自己训练好的网络模型，运行以下命令，即可在mtcnn_pytorch/data/you_result/目录下查看检测结果。
+```
+cd mtcnn_pytorch/
+python test_youModel_images.py
+```
+
+**注意：** 检查测试文件test_youModel_images.py中的模型路径是否与你训练好的模型路径一致，若不一致，则修改路径。
 
 -----
