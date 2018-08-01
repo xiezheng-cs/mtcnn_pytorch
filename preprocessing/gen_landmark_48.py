@@ -136,7 +136,7 @@ def parse_args():
     parser.add_argument('--anno_file', dest='annotation_file', help='landmark dataset original annotation file',
                         default=os.path.join(config.ANNO_STORE_DIR, "landmark_imagelist.txt"), type=str)
     parser.add_argument('--prefix_path', dest='prefix_path', help='annotation file image prefix root path',
-                        default='/home/datasets/Face/FaceAlignment/train', type=str)
+                        default='/home/xiezheng/datasets/Face/FaceAlignment/train', type=str)
 
     args = parser.parse_args()
     return args
