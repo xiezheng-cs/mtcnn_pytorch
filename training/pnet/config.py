@@ -7,7 +7,7 @@ class Config(object):
         self.annoPath = "./annotations/imglist_anno_12.txt"
         self.manualSeed = 1  # manually set RNG seed
         self.use_cuda = True
-        self.GPU = "0, 1"  # default gpu to use
+        self.GPU = "0"  # default gpu to use
 
         # ------------- Data options -------------------------------------------
         self.nThreads = 8  # number of data loader threads
