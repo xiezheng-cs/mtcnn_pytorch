@@ -95,4 +95,7 @@ python test_youModel_images.py
 
 **注意：** 检查测试文件test_youModel_images.py中的模型路径是否与你训练好的模型路径一致，若不一致，则修改路径。
 
+
+**六、可在FDDB上测试训练好的模型**
+
 -----
