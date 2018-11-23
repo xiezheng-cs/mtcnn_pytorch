@@ -8,9 +8,6 @@
 2. 理解[MTCNN](https://kpzhang93.github.io/MTCNN_face_detection_alignment/paper/spl.pdf)人脸检测的基本流程，并加以实践。
 
 
-## 训练数据集
-为了训练PNet和RNet，将[WiderFace](http://mmlab.ie.cuhk.edu.hk/projects/WIDERFace/)用于人脸分类和人脸边界框回归；为了训练ONet，将[WiderFace](http://mmlab.ie.cuhk.edu.hk/projects/WIDERFace/)用于人脸分类和人脸边界框回归，使用[Training Dataset](http://mmlab.ie.cuhk.edu.hk/archive/CNN_FacePoint.htm)用于人脸特征点回归。
-
 
 ## 实验环境
 [anaconda3](https://www.anaconda.com/download/)
