@@ -19,9 +19,6 @@
 [opencv-python](https://pypi.org/project/opencv-python/)等。
 
 
-## 实验时间及地点
-2018年7月28日 晚上7:00-9:00 B7-138
-
 
 ## 实验步骤
 **一、获取代码**
@@ -34,13 +31,15 @@ git clone https://github.com/xiezheng-cs/mtcnn_pytorch.git
 **二、实验环境安装**
 1. 确保本机或是服务器已安装好[anaconda3](https://www.anaconda.com/download/)环境；
 2. pip或conda安装[pytorch 0.4.1 和 torchvision](https://pytorch.org/)环境；
-3. pip或conda安装[opencv-python](https://pypi.org/project/opencv-python/)环境。
+3. pip或conda安装[opencv-python](https://pypi.org/project/opencv-python/)环境；
+4. pip或conda安装[tensorflow](https://tensorflow.google.cn/install/pip)环境。
 
 ```bash
 pip install http://download.pytorch.org/whl/cpu/torch-0.4.1-cp36-cp36m-win_amd64.whl     # Windows
 pip install http://download.pytorch.org/whl/cpu/torch-0.4.1-cp36-cp36m-linux_x86_64.whl  # Linux
 pip install torchvision
 pip install opencv-python
+pip install --upgrade tensorflow
 ```
 
 **三、简单测试给定模型**
