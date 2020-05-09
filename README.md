@@ -13,7 +13,8 @@
 [anaconda3](https://www.anaconda.com/download/)
 [pytorch 0.4.1](https://pytorch.org/)
 [torchvision](https://pytorch.org/)
-[opencv-python](https://pypi.org/project/opencv-python/)等。
+[opencv-python](https://pypi.org/project/opencv-python/)
+tensorflow, tensorboard 等。
 
 
 
@@ -29,6 +30,7 @@ git clone https://github.com/xiezheng-cs/mtcnn_pytorch.git
 1. 确保本机或是服务器已安装好[anaconda3](https://www.anaconda.com/download/)环境；
 2. pip或conda安装[pytorch 0.4.1 和 torchvision](https://pytorch.org/)环境；
 3. pip或conda安装[opencv-python](https://pypi.org/project/opencv-python/)环境；
+4. pip或conda按照tensorflow和tensorboard.
 
 ```bash
 pip install http://download.pytorch.org/whl/cpu/torch-0.4.1-cp36-cp36m-win_amd64.whl     # Windows
